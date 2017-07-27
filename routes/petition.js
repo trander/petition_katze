@@ -16,12 +16,15 @@ router.post('/cats', function(req, res, next) {
 
 // update a cat in the db
 router.put('/cats/:id', function(req, res, next) {
-  res.send({typd:'PUT'});
+  res.send({type:'PUT'});
 });
 
 // delete a cat from the db
 router.delete('/cats/:id', function(req, res, next) {
-  res.send({type:'DELETE'});
+  // console.log(req.params.id);
+  Cat.findByIdAndRemove({_id: req.params.id}).then(function(cat) {
+      res.send(cat);
+  });
 });
 
 module.exports = router;
