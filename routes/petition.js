@@ -4,7 +4,15 @@ const Cat = require('../models/cat');
 
 // get a list of cats from the db
 router.get('/cats', function(req, res, next) {
-  res.send({type:'GET'})
+  // Cat.find({})then(function(cats) {
+  //   res.send(cats);
+  // });
+  Cat.geoNear(
+    {type: "Point", coordinates: [parseFloat(req.query.lng), parseFloat(req.query.lat)]},
+    {maxDistance: 100000, spherical:true}
+  ).then(function(cats){
+      res.send(cats);
+  });
 });
 
 // add a new cat to the db
