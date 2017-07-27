@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Petition fur Katze</title>
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="/style.css" type="text/css">
+  </head>
+  <body>
+    <h1 class="title"> Petition for better CAT FOOD</h1>
+    <div id="homepage">
+      <h1>Sign for better cat food.</h1>
+      <div id="cats"></div>
+    </div>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script src="https://unpkg.com/react@15/dist/react.js"></script>
+    <script src="https://unpkg.com/react-dom@15/dist/react-dom.min.js"></script>
+
+    <!-- Create React Component -->
+
+    <script type="text/babel">
+
+    var Cats = React.createClass({
+      getInitialState: function() {
+        return ({
+          cats: []
+        });
+      },
+      render: function() {
+        var cats = this.state.cats;
+        cats.map(function(cat, index) {
+          return(
+            <li key={index}>
+              <span className={cat.obj.available}></span>
+              <span className="name">{cat.obj.name}</span>
+              <span className="dosen">{cat.obj.dosen}</span>
+              <span className="dist">{Math.floor(cat.dis / 1000)}km</span>
+            </li>
+          );
+        });
+
+        return(
+          <div id="cat-container">
+            <form id="search" onSubmit={this.handleSubmit}>
+              <label> Enter your longitude : </label>
+              <input type="text" ref="lng" placeholder="longitude" required/>
+              <label> Enter your longitude : </label>
+              <input type="text" ref="lng" placeholder="longitude" required/>
+              <input type="submit" value="Find Ninjas"/>
+            </form>
+            <ul>{cats}</ul>
+          </div>
+        );
+      },
+      handleSubmit : function(e) {
+        e.preventDefault();
+        var lng = this.refs.lng.value;
+        var lat = this.refs.lat.value;
+
+        fetch('/petition/cats?lng='+lng+'&lat='+lat).then(function(data) {
+          return data.json();
+        }).then( json => {
+          this.setState({
+            cats: json
+          });
+        });
+      }
+    });
+
+    ReactDOM.render(
+      <Cats />,
+      document.getElementById('cats')
+    );
+    </script>
+  </body>
+</html>

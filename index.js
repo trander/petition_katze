@@ -9,6 +9,9 @@ const app = express();
 mongoose.connect('mongodb://localhost/petitionKatze');
 mongoose.Promise = global.Promise;
 
+app.use(express.static('public'));
+
+// use body-parser middleware
 app.use(bodyParser.json());
 
 // initialize routes
